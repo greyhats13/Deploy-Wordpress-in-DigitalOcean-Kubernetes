@@ -13,7 +13,7 @@ Hal yang perlu diperhatikan:
 ### Diagram Infrastructur:
 Pada sisi kiri adalah tradisional diagram untuk aplikasi web 3-tier. Pada sebelah kanan, anda akan melihat bagaimana setiap bagian infrastuktur di petakan ke konsep kubernetes.
 
-    Config data            	(k8s ConfigMaps and Secrets)
+    Config data            	(k8s ConfigMaps dan Secrets)
 
     MySQL Container             (k8s replicaset)
     MySQL Service               (k8s service)
@@ -28,9 +28,9 @@ Pada sisi kiri adalah tradisional diagram untuk aplikasi web 3-tier. Pada sebela
 
 ## 1. Mysql Setup
 
-File Secret membutuhkan nilai base64-encoded values jika ingin digunakan dengan cara yang sama
+File Secret membutuhkan nilai base64-encoded jika ingin digunakan dengan cara yang sama.
 
-Generate MYSQL_PASSWORD baru and nilai MYSQL_ROOT_PASSWORD seperti ini dan gantikan nilai nya disini secrets/wp-mysql-secrets.env:
+Generate sebuah MYSQL_PASSWORD dan MYSQL_ROOT_PASSWORD baru seperti berikut dan gantikan nilai nya disini secrets/wp-mysql-secret.yaml:
 
     echo && cat /dev/urandom | env LC_CTYPE=C tr -dc [:alnum:] | head -c 15 | base64 && echo
 
@@ -42,9 +42,9 @@ Now, Buat sebuah all-in-one secret:
 
 Buat mysql volume dan replicaset anda. Ekspos ini ke internal service yang baru.
 
-    kubectl apply -f manifestasi/mysql-volume-claim.yaml
-    kubectl apply -f manifestasi/mysql-replicaset.yaml
-    kubectl apply -f manifestasi/mysql-service.yaml
+    kubectl apply -f manifests/mysql-volume-claim.yaml
+    kubectl apply -f manifests/mysql-replicaset.yaml
+    kubectl apply -f manifests/mysql-service.yaml
 
 
 Jalankan shell didalam mysql container, login kedalam mysql, dan setup Database:
@@ -52,7 +52,7 @@ Jalankan shell didalam mysql container, login kedalam mysql, dan setup Database:
     kubectl get pods			    # Dapatkan nama pods
     kubectl exec -it mysql-abcde -- bash    # Ganti mysql-abcde dengan nama pod yang asli.
 
-    # Gunakan password root yang dibuat diawal(secret/wp-mysql-secrets.yaml)
+    # Gunakan password root yang dibuat diawal(secrets/wp-mysql-secrets.yaml)
     mysql -u root -p
 
     #Pada shell mysql anda:
@@ -77,10 +77,10 @@ Edit config file di configs/apache.conf jika kita ingin menggunakan nama domain 
 
     # Jika kita menggunakan custom apache config pada container kita
     # kita bisa menggunakan:
-    # kubectl create cm --from-file kondigurasi/apache.conf apache-config
+    # kubectl create cm --from-file configs/apache.conf apache-config
 
-    kubectl apply -f manifestasi/wordpress-datavolume-claim.yaml
-    kubectl apply -f manifestasi/wordpress-deployment.yaml
+    kubectl apply -f manifests/wordpress-datavolume-claim.yaml
+    kubectl apply -f manifests/wordpress-deployment.yaml
 
 Periksa pola untuk mendapatkan single file config kedalam container di wordpress-deployment.yaml.
 
@@ -88,7 +88,7 @@ Periksa pola untuk mendapatkan single file config kedalam container di wordpress
 ## 3. Load Balancer Setup
 DigitalOcean Load Balancer berperan untuk mengekspos cluster kita ke internet.
 
-    kubectl apply -f manifestasi/wordpress-loadbalancer.yaml
+    kubectl apply -f manifests/wordpress-loadbalancer.yaml
 
 
 ## Lihat Hasil deployment!
