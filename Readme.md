@@ -1,5 +1,5 @@
 ## Prasyarat
-Setelah selesai mensetup DigitalOcean kubernetes cluster, dan CCM deployment anda telah jalan
+Setelah selesai mensetup DigitalOcean kubernetes cluster.
 
 ## Catatan
 Untuk melihat dokumentasi wordpress docker cek disini: https://hub.docker.com/_/wordpress/
@@ -10,7 +10,7 @@ Hal yang perlu diperhatikan:
 - service ports yang diekspos oleh container (OUTPUT)
 
 
-### Infrastructure Diagram:
+### Diagram Infrastructur:
 Pada sisi kiri adalah tradisional diagram untuk aplikasi web 3-tier. Pada sebelah kanan, anda akan melihat bagaimana setiap bagian infrastuktur di petakan ke konsep kubernetes.
 
     Config data            	(k8s ConfigMaps and Secrets)
@@ -49,7 +49,7 @@ Buat mysql volume dan replicaset anda. Ekspos ini ke internal service yang baru.
 
 Jalankan shell didalam mysql container, login kedalam mysql, dan setup Database:
 
-    kubectl get pods						# Dapatkan nama pods
+    kubectl get pods			    # Dapatkan nama pods
     kubectl exec -it mysql-abcde -- bash    # Ganti mysql-abcde dengan nama pod yang asli.
 
     # Gunakan password root yang dibuat diawal(secret/wp-mysql-secrets.yaml)
@@ -73,16 +73,16 @@ Periksa apa yang telah kita buat!
 
 ## 2. Wordpress Setup
 
-Edit config file di configs/apache.conf jika anda ingin menggunakan nama domain untuk situs wordpress anda.
+Edit config file di configs/apache.conf jika kita ingin menggunakan nama domain untuk situs wordpress kita.
 
-    # Jika anda menggunakan custom apache config pada container anda
-    # Anda akan menggunakan:
+    # Jika kita menggunakan custom apache config pada container kita
+    # kita bisa menggunakan:
     # kubectl create cm --from-file kondigurasi/apache.conf apache-config
 
     kubectl apply -f manifestasi/wordpress-datavolume-claim.yaml
     kubectl apply -f manifestasi/wordpress-deployment.yaml
 
-Periksa pola untuk mendapatkan single config file kedalam container di wordpress-deployment.yaml.
+Periksa pola untuk mendapatkan single file config kedalam container di wordpress-deployment.yaml.
 
 
 ## 3. Load Balancer Setup
@@ -91,8 +91,8 @@ DigitalOcean Load Balancer berperan untuk mengekspos cluster kita ke internet.
     kubectl apply -f manifestasi/wordpress-loadbalancer.yaml
 
 
-## Lihat Hasil deployment anda!
-Dapat kan load balancer external IP dengan perintah ini:
+## Lihat Hasil deployment!
+Dapat kan load balancer external IP dengan perintah berikut:
 
     kubectl get services
 
