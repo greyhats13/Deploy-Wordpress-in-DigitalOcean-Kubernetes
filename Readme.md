@@ -35,12 +35,12 @@ Generate sebuah MYSQL_PASSWORD dan MYSQL_ROOT_PASSWORD baru seperti berikut dan 
     echo && cat /dev/urandom | env LC_CTYPE=C tr -dc [:alnum:] | head -c 15 | base64 && echo
 
 
-Now, Buat sebuah all-in-one secret:
+Sekarang, Buat sebuah all-in-one secret:
 
     kubectl apply -f secrets/wp-mysql-secrets.yaml
 
 
-Buat mysql volume dan replicaset anda. Ekspos ini ke internal service yang baru.
+Buat mysql volume dan replicaset. Ekspos ini ke internal service yang baru.
 
     kubectl apply -f manifests/mysql-volume-claim.yaml
     kubectl apply -f manifests/mysql-replicaset.yaml
@@ -61,7 +61,7 @@ Jalankan shell didalam mysql container, login kedalam mysql, dan setup Database:
 Ctrl-d untuk kembali.
 
 
-Periksa apa yang telah kita buat!
+Periksa apa yang telah dibuat!
 
     kubectl get pv
     kubectl get secrets
@@ -73,7 +73,7 @@ Periksa apa yang telah kita buat!
 
 ## 2. Wordpress Setup
 
-Edit config file di configs/apache.conf jika kita ingin menggunakan nama domain untuk situs wordpress kita.
+Edit config file di configs/apache.conf jika kita ingin menggunakan nama domain untuk situs wordpress.
 
     # Jika kita menggunakan custom apache config pada container kita
     # kita bisa menggunakan:
